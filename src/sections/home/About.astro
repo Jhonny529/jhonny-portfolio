@@ -1,0 +1,161 @@
+---
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const content = {
+  en: {
+    eyebrow: 'About',
+    title: 'Backend engineer focused on architecture, scalability, and production-ready delivery',
+    description:
+      'I work on backend platforms, scalable APIs, and infrastructure-aware systems with a strong focus on maintainability and real deployment conditions. My approach combines software architecture, service integration, and hands-on execution from technical design to production.',
+    sections: [
+      {
+        title: 'What I build',
+        items: [
+          'Maintainable backend platforms',
+          'Scalable APIs and service integrations',
+          'Infrastructure-aware systems ready for production',
+          'Authentication, security, and real-time workflows',
+        ],
+      },
+      {
+        title: 'How I work',
+        items: [
+          'Architecture-first, but implementation-oriented',
+          'Focused on maintainability over unnecessary complexity',
+          'Comfortable working from system design to deployment',
+          'Production-minded decisions with practical execution',
+        ],
+      },
+      {
+        title: 'Core stack',
+        items: [
+          'Node.js',
+          'TypeScript',
+          'Express.js',
+          'PostgreSQL',
+          'Docker',
+          'Nginx',
+          'Prisma',
+          'Redis',
+        ],
+      },
+    ],
+    environmentTitle: 'Environment and tooling',
+    environmentDescription:
+      'I am comfortable working in Linux-based environments and I value practical, efficient setups for development and deployment workflows.',
+    environmentItems: [
+      'Ubuntu GNOME',
+      'Linux Mint XFCE',
+      'Arch Linux + Hyprland',
+    ],
+  },
+  es: {
+    eyebrow: 'Sobre mí',
+    title: 'Ingeniero backend enfocado en arquitectura, escalabilidad y entrega lista para producción',
+    description:
+      'Trabajo en plataformas backend, APIs escalables y sistemas con enfoque en infraestructura, manteniendo como prioridad la mantenibilidad y las condiciones reales de despliegue. Mi enfoque combina arquitectura de software, integración de servicios y ejecución directa desde el diseño técnico hasta producción.',
+    sections: [
+      {
+        title: 'Lo que construyo',
+        items: [
+          'Plataformas backend mantenibles',
+          'APIs escalables e integración de servicios',
+          'Sistemas orientados a infraestructura y listos para producción',
+          'Autenticación, seguridad y flujos en tiempo real',
+        ],
+      },
+      {
+        title: 'Cómo trabajo',
+        items: [
+          'Arquitectura primero, pero con foco en implementación',
+          'Mantenibilidad por encima de complejidad innecesaria',
+          'Comodidad trabajando desde diseño de sistema hasta despliegue',
+          'Decisiones pensadas para producción con ejecución práctica',
+        ],
+      },
+      {
+        title: 'Stack principal',
+        items: [
+          'Node.js',
+          'TypeScript',
+          'Express.js',
+          'PostgreSQL',
+          'Docker',
+          'Nginx',
+          'Prisma',
+          'Redis',
+        ],
+      },
+    ],
+    environmentTitle: 'Entorno y herramientas',
+    environmentDescription:
+      'Trabajo con comodidad en entornos Linux y valoro configuraciones prácticas y eficientes para desarrollo, despliegue y flujos técnicos del día a día.',
+    environmentItems: [
+      'Ubuntu GNOME',
+      'Linux Mint XFCE',
+      'Arch Linux + Hyprland',
+    ],
+  },
+};
+
+const t = content[lang];
+---
+
+<section class="space-y-12">
+  <div class="max-w-3xl space-y-5">
+    <p class="text-sm font-medium uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400">
+      {t.eyebrow}
+    </p>
+
+    <h2 class="text-3xl font-semibold tracking-tight text-neutral-950 dark:text-white md:text-4xl">
+      {t.title}
+    </h2>
+
+    <p class="text-base leading-8 text-neutral-600 dark:text-neutral-300 md:text-lg">
+      {t.description}
+    </p>
+  </div>
+
+  <div class="grid gap-5 md:grid-cols-3">
+    {t.sections.map((section) => (
+      <article class="group rounded-3xl border border-neutral-200 bg-white/80 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-lg dark:border-white/10 dark:bg-white/5 dark:hover:border-white/15 dark:hover:bg-white/[0.07]">
+        <h3 class="text-lg font-semibold text-neutral-950 dark:text-white">
+          {section.title}
+        </h3>
+
+        <ul class="mt-5 space-y-3">
+          {section.items.map((item) => (
+            <li class="flex items-start gap-3 text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+              <span class="mt-2 h-1.5 w-1.5 rounded-full bg-neutral-400 transition group-hover:bg-green-500 dark:bg-neutral-500"></span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+    ))}
+  </div>
+
+  <article class="rounded-3xl border border-neutral-200 bg-white/80 p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
+    <div class="max-w-3xl space-y-3">
+      <h3 class="text-lg font-semibold text-neutral-950 dark:text-white">
+        {t.environmentTitle}
+      </h3>
+
+      <p class="text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+        {t.environmentDescription}
+      </p>
+    </div>
+
+    <ul class="mt-5 flex flex-wrap gap-3">
+      {t.environmentItems.map((item) => (
+        <li class="rounded-full border border-neutral-200 bg-neutral-50 px-4 py-2 text-sm text-neutral-700 transition hover:border-green-500/40 hover:text-neutral-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-neutral-300 dark:hover:border-green-500/40 dark:hover:text-white">
+          {item}
+        </li>
+      ))}
+    </ul>
+  </article>
+</section>

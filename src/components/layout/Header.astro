@@ -1,0 +1,266 @@
+---
+import LanguageSwitch from './LanguageSwitch.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const nav = {
+  en: {
+    home: 'Home',
+    about: 'About',
+    projects: 'Projects',
+    experience: 'Experience',
+    contact: 'Contact',
+    open_menu: 'Open menu',
+  },
+  es: {
+    home: 'Inicio',
+    about: 'Sobre mí',
+    projects: 'Proyectos',
+    experience: 'Experiencia',
+    contact: 'Contacto',
+    open_menu: 'Abrir menú',
+  },
+};
+
+const t = nav[lang];
+
+const items = [
+  { href: '#home', label: t.home, icon: 'home' },
+  { href: '#about', label: t.about, icon: 'user' },
+  // { href: '#projects', label: t.projects, icon: 'projects' },
+  { href: '#experience', label: t.experience, icon: 'briefcase' },
+  { href: '#contact', label: t.contact, icon: 'mail' },
+] as const;
+---
+
+<header class="sticky top-0 z-50 border-b border-neutral-200/80 bg-white/75 backdrop-blur-xl transition-colors duration-300 dark:border-white/10 dark:bg-neutral-950/75">
+  <div class="mx-auto grid max-w-6xl grid-cols-[auto_1fr] items-center px-6 py-4 md:grid-cols-[120px_1fr_auto]">
+    <!-- Hamburger: solo mobile -->
+    <button
+      id="menu-toggle"
+      type="button"
+      class="menu-btn md:hidden"
+      aria-label={t.open_menu}
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg
+        id="icon-hamburger"
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="4" y1="6" x2="20" y2="6" />
+        <line x1="4" y1="12" x2="20" y2="12" />
+        <line x1="4" y1="18" x2="20" y2="18" />
+      </svg>
+
+      <svg
+        id="icon-close"
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        style="display: none;"
+      >
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+
+    <!-- Spacer desktop -->
+    <div aria-hidden="true" class="hidden h-10 w-[120px] md:block"></div>
+
+    <!-- Nav desktop -->
+    <nav class="hidden items-center justify-center gap-2 md:flex" aria-label="Primary navigation">
+      {items.map((item) => (
+        <a href={item.href} class="nav-link">
+          <Icon name={item.icon} className="nav-icon" size={18} />
+          <span>{item.label}</span>
+        </a>
+      ))}
+    </nav>
+
+    <!-- Controles -->
+    <div class="flex items-center justify-end gap-3">
+      <LanguageSwitch lang={lang} />
+      <ThemeToggle lang={lang} />
+    </div>
+  </div>
+
+  <!-- Drawer mobile -->
+  <div
+    id="mobile-menu"
+    class="mobile-menu md:hidden"
+    aria-hidden="true"
+  >
+    <nav class="flex flex-col gap-1 px-4 py-3" aria-label="Mobile navigation">
+      {items.map((item) => (
+        <a href={item.href} class="mobile-nav-link">
+          <Icon name={item.icon} size={18} />
+          <span>{item.label}</span>
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    const btn = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const iconHamburger = document.getElementById('icon-hamburger');
+    const iconClose = document.getElementById('icon-close');
+
+    if (!btn || !menu || !iconHamburger || !iconClose) return;
+
+    let open = false;
+
+    const setOpen = (value) => {
+      open = value;
+
+      btn.setAttribute('aria-expanded', String(value));
+      menu.setAttribute('aria-hidden', String(!value));
+      menu.classList.toggle('mobile-menu--open', value);
+
+      iconHamburger.style.display = value ? 'none' : '';
+      iconClose.style.display = value ? '' : 'none';
+    };
+
+    btn.addEventListener('click', () => setOpen(!open));
+
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768 && open) {
+        setOpen(false);
+      }
+    });
+  })();
+</script>
+
+<style>
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.78rem 1rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    color: rgb(64 64 64);
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1;
+    transition:
+      color 220ms ease,
+      background-color 220ms ease;
+  }
+
+  :global(.dark) .nav-link {
+    color: rgb(229 229 229);
+  }
+
+  .nav-link:hover {
+    background: rgba(0, 0, 0, 0.04);
+    color: rgb(23 23 23);
+  }
+
+  :global(.dark) .nav-link:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: white;
+  }
+
+  .nav-link span {
+    white-space: nowrap;
+  }
+
+  .menu-btn {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: transparent;
+    color: rgb(64 64 64);
+    cursor: pointer;
+    transition: background 200ms ease, color 200ms ease;
+  }
+
+  :global(.dark) .menu-btn {
+    color: rgb(229 229 229);
+  }
+
+  .menu-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  :global(.dark) .menu-btn:hover {
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  .mobile-menu {
+    overflow: hidden;
+    max-height: 0;
+    border-top: 1px solid transparent;
+    transition:
+      max-height 300ms ease,
+      border-color 300ms ease;
+  }
+
+  .mobile-menu--open {
+    max-height: 400px;
+    border-color: rgb(229 229 229 / 0.6);
+  }
+
+  :global(.dark) .mobile-menu--open {
+    border-color: rgb(255 255 255 / 0.08);
+  }
+
+  .mobile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 0.75rem;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    color: rgb(64 64 64);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition:
+      background 200ms ease,
+      color 200ms ease;
+  }
+
+  :global(.dark) .mobile-nav-link {
+    color: rgb(229 229 229);
+  }
+
+  .mobile-nav-link:hover {
+    background: rgba(0, 0, 0, 0.04);
+    color: rgb(23 23 23);
+  }
+
+  :global(.dark) .mobile-nav-link:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: white;
+  }
+</style>

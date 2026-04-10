@@ -1,0 +1,236 @@
+---
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const content = {
+  en: {
+    eyebrow: 'Experience',
+    title: 'Professional experience',
+    description:
+      'Experience across backend engineering, software architecture, infrastructure, deployment workflows, and hands-on technical execution.',
+    featuredCompany: 'Arxatec',
+    featuredStack: [
+      'Node.js',
+      'TypeScript',
+      'PostgreSQL',
+      'Prisma',
+      'Redis',
+      'Docker',
+      'Nginx',
+      'FastAPI',
+      'Qdrant',
+      'Groq',
+    ],
+    items: [
+      {
+        company: 'Arxatec',
+        role: 'Co-Founder & CTO',
+        period: 'Dec 2024 — Present',
+        location: 'Lima, Peru — Remote',
+        summary:
+          'Leading the technical direction of a legal-tech platform while working hands-on across backend engineering, system design, infrastructure, deployment, and AI-assisted services.',
+        bullets: [
+          'Defined backend architecture, engineering standards, and technical direction across the platform.',
+          'Designed and built scalable backend services and APIs using Node.js, TypeScript, PostgreSQL, and Prisma.',
+          'Coordinated service integration, real-time communication flows, and multi-service platform structure.',
+          'Implemented AI-assisted workflows with FastAPI, Qdrant vector search, and Groq-based integrations.',
+          'Managed infrastructure decisions including VPS environments, reverse proxy configuration, Dockerized services, and deployment strategy.',
+        ],
+      },
+      {
+        company: 'La Base Cowork',
+        role: 'Software Engineer / Tech Lead',
+        period: 'Jul 2024 — Present',
+        location: 'Huancayo, Junín, Peru',
+        summary:
+          'Contributing across web development, API integration, infrastructure support, server environments, and technical leadership in multiple initiatives.',
+        bullets: [
+          'Developed and maintained websites, web platforms, and implementation-focused digital solutions.',
+          'Built and integrated APIs for internal systems and client-facing platforms.',
+          'Configured and managed VPS and local server environments, including Nginx-based deployments.',
+          'Supported technical planning, engineering decisions, mentoring, and execution quality across projects.',
+        ],
+      },
+      {
+        company: 'TID',
+        role: 'Software Intern / Software Analyst',
+        period: 'Feb 2024 — Aug 2024',
+        location: 'Huancayo, Junín, Peru — On-site',
+        summary:
+          'Early professional experience focused on software maintenance, module expansion, bug reduction, and support for PHP-based business systems.',
+        bullets: [
+          'Improved internal software and platform functionality.',
+          'Supported module expansion in existing business systems.',
+          'Worked on bug reduction and software quality improvement.',
+          'Assisted users and contributed to system support and adoption.',
+        ],
+      },
+    ],
+  },
+  es: {
+    eyebrow: 'Experiencia',
+    title: 'Experiencia profesional',
+    description:
+      'Experiencia en ingeniería backend, arquitectura de software, infraestructura, despliegue y ejecución técnica directa.',
+    featuredCompany: 'Arxatec',
+    featuredStack: [
+      'Node.js',
+      'TypeScript',
+      'PostgreSQL',
+      'Prisma',
+      'Redis',
+      'Docker',
+      'Nginx',
+      'FastAPI',
+      'Qdrant',
+      'Groq',
+    ],
+    items: [
+      {
+        company: 'Arxatec',
+        role: 'Co-Founder & CTO',
+        period: 'Dic 2024 — Actualidad',
+        location: 'Lima, Perú — Remoto',
+        summary:
+          'Liderando la dirección técnica de una plataforma legal-tech mientras ejecuto trabajo directo en backend, diseño de sistemas, infraestructura, despliegue y servicios asistidos por IA.',
+        bullets: [
+          'Definir la arquitectura backend, estándares de ingeniería y dirección técnica de la plataforma.',
+          'Diseñar y construir servicios backend y APIs escalables con Node.js, TypeScript, PostgreSQL y Prisma.',
+          'Coordinar integración de servicios, flujos de comunicación en tiempo real y estructura de plataforma multi-servicio.',
+          'Implementar flujos asistidos por IA con FastAPI, búsqueda vectorial en Qdrant e integraciones con Groq.',
+          'Gestionar decisiones de infraestructura, entornos VPS, configuración de reverse proxy, servicios en Docker y estrategia de despliegue.',
+        ],
+      },
+      {
+        company: 'La Base Cowork',
+        role: 'Software Engineer / Tech Lead',
+        period: 'Jul 2024 — Actualidad',
+        location: 'Huancayo, Junín, Perú',
+        summary:
+          'Participando en desarrollo web, integración de APIs, soporte de infraestructura, entornos de servidores y liderazgo técnico en múltiples iniciativas.',
+        bullets: [
+          'Desarrollar y mantener sitios web, plataformas web e implementaciones orientadas a entrega.',
+          'Construir e integrar APIs para sistemas internos y plataformas de cara al cliente.',
+          'Configurar y administrar entornos VPS y servidores locales, incluyendo despliegues basados en Nginx.',
+          'Apoyar planificación técnica, toma de decisiones, mentoría y calidad de ejecución en distintos proyectos.',
+        ],
+      },
+      {
+        company: 'TID',
+        role: 'Practicante / Software Analyst',
+        period: 'Feb 2024 — Ago 2024',
+        location: 'Huancayo, Junín, Perú — Presencial',
+        summary:
+          'Etapa profesional inicial enfocada en mantenimiento de software, ampliación de módulos, reducción de errores y soporte en sistemas empresariales basados en PHP.',
+        bullets: [
+          'Mejorar software interno y funcionalidades de plataforma.',
+          'Apoyar la ampliación de módulos en sistemas existentes.',
+          'Trabajar en reducción de errores y mejora de calidad del software.',
+          'Brindar soporte a usuarios y contribuir a una mejor adopción del sistema.',
+        ],
+      },
+    ],
+  },
+};
+
+const t = content[lang];
+
+const featured = t.items.find((item) => item.company === t.featuredCompany);
+const others = t.items.filter((item) => item.company !== t.featuredCompany);
+---
+<section class="space-y-12">
+  <div class="max-w-3xl space-y-4">
+    <p class="text-sm font-medium uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400">
+      {t.eyebrow}
+    </p>
+
+    <h2 class="text-3xl font-semibold tracking-tight text-neutral-950 dark:text-white md:text-4xl">
+      {t.title}
+    </h2>
+
+    <p class="text-base leading-8 text-neutral-600 dark:text-neutral-300 md:text-lg">
+      {t.description}
+    </p>
+  </div>
+
+  {featured && (
+    <article class="rounded-3xl border border-neutral-200 bg-white/80 p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-lg dark:border-white/10 dark:bg-white/5 dark:hover:border-white/15 dark:hover:bg-white/[0.07]">
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div>
+          <h3 class="text-2xl font-semibold text-neutral-950 dark:text-white">
+            {featured.company}
+          </h3>
+
+          <p class="mt-1 text-sm font-medium text-neutral-700 dark:text-neutral-200">
+            {featured.role}
+          </p>
+        </div>
+
+        <div class="text-sm text-neutral-500 dark:text-neutral-400 md:text-right">
+          <p>{featured.period}</p>
+          <p>{featured.location}</p>
+        </div>
+      </div>
+
+      <p class="mt-5 max-w-3xl text-sm leading-7 text-neutral-600 dark:text-neutral-300 md:text-base">
+        {featured.summary}
+      </p>
+
+      <div class="mt-5 flex flex-wrap gap-2">
+        {t.featuredStack.map((tech) => (
+          <span class="rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs text-neutral-700 transition hover:border-green-500/40 hover:text-neutral-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-neutral-300 dark:hover:border-green-500/40 dark:hover:text-white">
+            {tech}
+          </span>
+        ))}
+      </div>
+
+      <ul class="mt-6 space-y-3 text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+        {featured.bullets.map((bullet) => (
+          <li class="group flex gap-3">
+            <span class="mt-2 h-1.5 w-1.5 rounded-full bg-neutral-400 transition group-hover:bg-green-500 dark:bg-neutral-500"></span>
+            <span>{bullet}</span>
+          </li>
+        ))}
+      </ul>
+    </article>
+  )}
+
+  <div class="grid gap-5 md:grid-cols-2">
+    {others.map((item) => (
+      <article class="rounded-3xl border border-neutral-200 bg-white/80 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-lg dark:border-white/10 dark:bg-white/5 dark:hover:border-white/15 dark:hover:bg-white/[0.07]">
+        <div class="flex flex-col gap-3">
+          <div>
+            <h3 class="text-xl font-semibold text-neutral-950 dark:text-white">
+              {item.company}
+            </h3>
+
+            <p class="mt-1 text-sm font-medium text-neutral-700 dark:text-neutral-200">
+              {item.role}
+            </p>
+          </div>
+
+          <div class="text-sm text-neutral-500 dark:text-neutral-400">
+            <p>{item.period}</p>
+            <p>{item.location}</p>
+          </div>
+        </div>
+
+        <p class="mt-4 text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+          {item.summary}
+        </p>
+
+        <ul class="mt-5 space-y-3 text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+          {item.bullets.map((bullet) => (
+            <li class="group flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 rounded-full bg-neutral-400 transition group-hover:bg-green-500 dark:bg-neutral-500"></span>
+              <span>{bullet}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+    ))}
+  </div>
+</section>

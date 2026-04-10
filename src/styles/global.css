@@ -1,0 +1,4 @@
+@import "tailwindcss";
+
+/* Dark mode basado en clase .dark en <html> (no media query) */
+@custom-variant dark (&:is(.dark *));

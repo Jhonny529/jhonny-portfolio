@@ -1,0 +1,291 @@
+---
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const email = 'jhonny-529@outlook.com';
+const linkedin = 'https://www.linkedin.com/in/jhonny-sanes/';
+const github = 'https://github.com/Jhonny529';
+const cv = 'https://drive.google.com/file/d/1EEQP3IKMPtooE2wlAxrf79q37tXZ9mBj/view?usp=sharing';
+
+const hasValidEmail = email.includes('@');
+
+const content = {
+  en: {
+    eyebrow: 'Contact',
+    title: 'Let’s build something solid',
+    description:
+      'Available for backend engineering, software architecture, backend-focused product development, and technical collaboration.',
+    primaryCta: 'View CV',
+    secondaryCta: 'GitHub profile',
+    infoTitle: 'Professional contact',
+    availabilityTitle: 'Current focus',
+    availabilityText:
+      'Open to backend engineering work, technical collaborations, architecture-focused roles, and product-oriented development.',
+   cards: [
+      {
+        label: 'Email',
+        value: hasValidEmail ? email : 'Pending confirmation',
+        href: hasValidEmail ? `mailto:${email}` : null,
+      },
+      {
+        label: 'LinkedIn',
+        value: 'linkedin.com/in/jhonny-sanes',
+        href: linkedin,
+      },
+      {
+        label: 'GitHub',
+        value: 'github.com/Jhonny529',
+        href: github,
+      },
+      {
+        label: 'Location',
+        value: 'Peru',
+        href: null,
+      },
+    ],
+    note:
+      !hasValidEmail
+        ? 'The email provided is not valid as written. It appears to be missing the @ symbol, so it should be corrected before publishing this section.'
+        : 'Make sure all links remain public and updated before publishing.',
+    workStyleTitle: 'Work setup',
+    workStyleText:
+      'I work best in remote or semi-remote environments that allow focused execution, clear technical communication, and well-structured collaboration. This setup helps me stay productive while contributing effectively across backend development, architecture, and deployment workflows.',
+    workStyleItems: [
+      'Remote or semi-remote collaboration',
+      'Clear technical communication',
+      'Focused execution and autonomy',
+      'Structured delivery and maintainability',
+    ],
+  },
+  es: {
+    eyebrow: 'Contacto',
+    title: 'Construyamos algo sólido',
+    description:
+      'Disponible para trabajo en ingeniería backend, arquitectura de software, desarrollo de producto con foco backend y colaboración técnica.',
+    primaryCta: 'Ver CV',
+    secondaryCta: 'Perfil de GitHub',
+    infoTitle: 'Contacto profesional',
+    availabilityTitle: 'Enfoque actual',
+    availabilityText:
+      'Disponible para roles de backend, colaboraciones técnicas, trabajo orientado a arquitectura y desarrollo de producto.',
+    cards: [
+      {
+        label: 'Email',
+        value: hasValidEmail ? email : 'Pending confirmation',
+        href: hasValidEmail ? `mailto:${email}` : null,
+      },
+      {
+        label: 'LinkedIn',
+        value: 'linkedin.com/in/jhonny-sanes',
+        href: linkedin,
+      },
+      {
+        label: 'GitHub',
+        value: 'github.com/Jhonny529',
+        href: github,
+      },
+      {
+        label: 'Location',
+        value: 'Peru',
+        href: null,
+      },
+    ],
+    note:
+      !hasValidEmail
+        ? 'El correo proporcionado no es válido tal como está escrito. Parece que falta el símbolo @, así que debes corregirlo antes de publicar esta sección.'
+        : 'Asegúrate de que todos los enlaces sigan siendo públicos y estén actualizados antes de publicar.',
+    workStyleTitle: 'Forma de trabajo',
+    workStyleText:
+      'Trabajo mejor en entornos remotos o semi remotos que permitan concentración, comunicación técnica clara y colaboración bien estructurada. Ese formato me ayuda a mantener una ejecución sólida y aportar mejor en backend, arquitectura y despliegue.',
+    workStyleItems: [
+      'Trabajo remoto o semi remoto',
+      'Comunicación técnica clara',
+      'Ejecución enfocada y autonomía',
+      'Entrega estructurada y mantenible',
+    ],
+  },
+};
+
+const t = content[lang];
+---
+
+<section class="space-y-10">
+  <div class="max-w-3xl space-y-4">
+    <p class="text-sm font-medium uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400">
+      {t.eyebrow}
+    </p>
+
+    <h2 class="text-3xl font-semibold tracking-tight text-neutral-950 dark:text-white md:text-4xl">
+      {t.title}
+    </h2>
+
+    <p class="text-base leading-8 text-neutral-600 dark:text-neutral-300 md:text-lg">
+      {t.description}
+    </p>
+  </div>
+
+  <div class="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+    <article class="rounded-3xl border border-neutral-200 bg-white/80 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-lg dark:border-white/10 dark:bg-white/5 dark:hover:border-white/15 dark:hover:bg-white/[0.07]">
+      <div class="space-y-6">
+        <div class="space-y-2">
+          <h3 class="text-lg font-semibold text-neutral-950 dark:text-white">
+            {t.infoTitle}
+          </h3>
+
+          <p class="text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+            {t.availabilityText}
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <a
+            href={cv}
+            target="_blank"
+            rel="noreferrer"
+            class="rounded-full bg-neutral-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+          >
+            {t.primaryCta}
+          </a>
+
+          <a
+            href={github}
+            target="_blank"
+            rel="noreferrer"
+            class="rounded-full border border-neutral-300 px-5 py-3 text-sm font-medium text-neutral-800 transition hover:bg-neutral-100 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+          >
+            {t.secondaryCta}
+          </a>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          {t.cards.map((card) => (
+            <article class="group rounded-2xl border border-neutral-200 bg-neutral-50/80 p-4 transition duration-300 hover:border-green-500/30 hover:bg-white dark:border-white/10 dark:bg-white/[0.03] dark:hover:bg-white/[0.06]">
+              <p class="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+                {card.label}
+              </p>
+
+              {card.href ? (
+                <a
+                  href={card.href}
+                  target={card.href.startsWith('http') ? '_blank' : undefined}
+                  rel={card.href.startsWith('http') ? 'noreferrer' : undefined}
+                  class="mt-2 block text-base font-semibold text-neutral-950 transition group-hover:text-green-600 dark:text-white dark:group-hover:text-green-400"
+                >
+                  {card.value}
+                </a>
+              ) : (
+                <p class="mt-2 text-base font-semibold text-neutral-950 dark:text-white">
+                  {card.value}
+                </p>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </article>
+    <article class="rounded-3xl border border-dashed border-neutral-300 bg-neutral-100/70 p-6 dark:border-white/10 dark:bg-white/5">
+      <div class="space-y-5">
+        <h3 class="text-lg font-semibold text-neutral-950 dark:text-white">
+          {t.workStyleTitle}
+        </h3>
+
+        <p class="text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+          {t.workStyleText}
+        </p>
+
+        <div class="space-y-3">
+          {t.workStyleItems.map((item) => (
+            <div class="workstyle-item">
+              <span class="workstyle-dot"></span>
+              <span class="workstyle-text">{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .workstyle-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 42px;
+    padding: 0.95rem 1rem;
+    border-radius: 1rem;
+    border: 1px solid rgb(229 229 229);
+    background: rgb(255 255 255 / 0.8);
+    color: rgb(64 64 64);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+    transition:
+      border-color 220ms ease,
+      background-color 220ms ease,
+      transform 220ms ease,
+      box-shadow 220ms ease,
+      color 220ms ease;
+  }
+
+  .workstyle-item:hover {
+    transform: translateY(-2px);
+    border-color: rgb(34 197 94 / 0.35);
+    background: rgb(255 255 255 / 0.96);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.08);
+  }
+
+  .workstyle-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background: rgb(23 23 23);
+    transition:
+      background-color 220ms ease,
+      transform 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  .workstyle-item:hover .workstyle-dot {
+    background: rgb(34 197 94);
+    transform: scale(1.15);
+    box-shadow: 0 0 0 6px rgb(34 197 94 / 0.12);
+  }
+
+  .workstyle-text {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: rgb(64 64 64);
+    transition: color 220ms ease;
+  }
+
+  .workstyle-item:hover .workstyle-text {
+    color: rgb(23 23 23);
+  }
+
+  :global(.dark) .workstyle-item {
+    border-color: rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 0.05);
+    color: rgb(212 212 212);
+  }
+
+  :global(.dark) .workstyle-item:hover {
+    border-color: rgb(34 197 94 / 0.4);
+    background: rgb(255 255 255 / 0.08);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.28);
+  }
+
+  :global(.dark) .workstyle-dot {
+    background: rgb(245 245 245);
+  }
+
+  :global(.dark) .workstyle-text {
+    color: rgb(212 212 212);
+  }
+
+  :global(.dark) .workstyle-item:hover .workstyle-text {
+    color: white;
+  }
+</style>

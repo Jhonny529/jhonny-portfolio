@@ -1,0 +1,124 @@
+---
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const linkedin = 'https://www.linkedin.com/in/jhonny-sanes/';
+const github = 'https://github.com/Jhonny529';
+const cv = 'https://drive.google.com/file/d/1EEQP3IKMPtooE2wlAxrf79q37tXZ9mBj/view?usp=sharing';
+
+const content = {
+  en: {
+    name: 'Jhonny Sanes',
+    description: 'Backend engineer focused on architecture, scalable systems, and production-ready delivery.',
+    cv: 'CV',
+    github: 'GitHub',
+    linkedin: 'LinkedIn',
+    copyright: `© ${new Date().getFullYear()} Jhonny Sanes. All rights reserved.`,
+  },
+  es: {
+    name: 'Jhonny Sanes',
+    description: 'Ingeniero backend enfocado en arquitectura, sistemas escalables y entrega lista para producción.',
+    cv: 'CV',
+    github: 'GitHub',
+    linkedin: 'LinkedIn',
+    copyright: `© ${new Date().getFullYear()} Jhonny Sanes. Todos los derechos reservados.`,
+  },
+};
+
+const t = content[lang];
+---
+
+<footer class="mt-20 border-t border-neutral-200/80 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-neutral-950/60">
+  <div class="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-10 md:flex-row md:items-start md:justify-between">
+    <div class="max-w-md space-y-3">
+      <p class="text-base font-semibold text-neutral-950 dark:text-white">
+        {t.name}
+      </p>
+
+      <p class="text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+        {t.description}
+      </p>
+    </div>
+
+    <nav class="flex flex-wrap gap-3 md:justify-end" aria-label="Footer links">
+      <a
+        href={github}
+        target="_blank"
+        rel="noreferrer"
+        class="footer-link"
+      >
+        {t.github}
+      </a>
+
+      <a
+        href={linkedin}
+        target="_blank"
+        rel="noreferrer"
+        class="footer-link"
+      >
+        {t.linkedin}
+      </a>
+
+      <a
+        href={cv}
+        target="_blank"
+        rel="noreferrer"
+        class="footer-link"
+      >
+        {t.cv}
+      </a>
+    </nav>
+  </div>
+
+  <div class="mx-auto max-w-6xl px-6 pb-8">
+    <p class="text-xs text-neutral-500 dark:text-neutral-400">
+      {t.copyright}
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    border-radius: 9999px;
+    border: 1px solid rgb(229 229 229);
+    background: rgb(255 255 255 / 0.8);
+    color: rgb(38 38 38);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition:
+      border-color 220ms ease,
+      background-color 220ms ease,
+      transform 220ms ease,
+      color 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  .footer-link:hover {
+    transform: translateY(-2px);
+    border-color: rgb(34 197 94 / 0.35);
+    background: rgb(255 255 255 / 0.96);
+    color: rgb(23 23 23);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.08);
+  }
+
+  :global(.dark) .footer-link {
+    border-color: rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 0.05);
+    color: rgb(229 229 229);
+  }
+
+  :global(.dark) .footer-link:hover {
+    border-color: rgb(34 197 94 / 0.4);
+    background: rgb(255 255 255 / 0.08);
+    color: white;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.28);
+  }
+</style>

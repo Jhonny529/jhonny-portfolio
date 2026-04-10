@@ -1,0 +1,194 @@
+---
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const content = {
+  en: {
+    eyebrow: 'Backend Engineer',
+    name: 'Jhonny Sanes',
+    role: 'Building scalable backend systems',
+    description:
+      'I design and build production-ready backend architectures, APIs, and infrastructure for scalable products. Focused on maintainability, performance, and real-world deployment.',
+    primaryCta: 'View projects',
+    secondaryCta: 'Contact me',
+    highlights: [
+      'Node.js + TypeScript architecture',
+      'API design & service integration',
+      'Docker, VPS, Nginx',
+      'Scalable systems & real-time flows',
+    ],
+    videoLabel: 'Animated hero preview',
+  },
+  es: {
+    eyebrow: 'Backend Engineer',
+    name: 'Jhonny Sanes',
+    role: 'Construyendo sistemas backend escalables',
+    description:
+      'Diseño y desarrollo arquitecturas backend listas para producción, APIs y sistemas escalables. Enfocado en mantenibilidad, rendimiento y despliegue real.',
+    primaryCta: 'Ver proyectos',
+    secondaryCta: 'Contáctame',
+    highlights: [
+      'Arquitectura Node.js + TypeScript',
+      'Diseño de APIs e integración',
+      'Docker, VPS, Nginx',
+      'Sistemas escalables y tiempo real',
+    ],
+    videoLabel: 'Vista previa animada',
+  },
+};
+
+const t = content[lang];
+---
+
+<section class="relative grid min-h-[calc(100svh-81px)] items-center gap-14 py-10 md:grid-cols-[1.1fr_0.9fr] md:py-16">
+
+  <!-- LEFT -->
+  <div class="relative z-10 max-w-2xl space-y-8">
+
+    <!-- HEADER -->
+    <div class="space-y-5">
+      <p class="text-sm font-medium uppercase tracking-[0.22em] text-neutral-500 dark:text-neutral-400">
+        {t.eyebrow}
+      </p>
+
+      <div class="space-y-3">
+        <h1 class="text-5xl font-semibold tracking-tight text-neutral-950 dark:text-white sm:text-6xl md:text-7xl">
+          {t.name}
+        </h1>
+
+        <p class="text-2xl font-light tracking-tight text-neutral-700 dark:text-neutral-300 sm:text-3xl md:text-4xl">
+          {t.role}
+        </p>
+      </div>
+
+      <p class="max-w-xl text-base leading-8 text-neutral-600 dark:text-neutral-300 md:text-lg">
+        {t.description}
+      </p>
+    </div>
+
+    <!-- CTA -->
+    <div class="flex flex-wrap items-center gap-4">
+      <a
+        href="#projects"
+        class="rounded-full bg-neutral-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+      >
+        {t.primaryCta}
+      </a>
+
+      <a
+        href="#contact"
+        class="rounded-full border border-neutral-300 px-6 py-3 text-sm font-medium text-neutral-800 transition hover:bg-neutral-100 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+      >
+        {t.secondaryCta}
+      </a>
+    </div>
+
+    <!-- HIGHLIGHTS -->
+    <ul class="grid gap-3 sm:grid-cols-2">
+      {t.highlights.map((item) => (
+        <li class="highlight-item">
+          <span class="highlight-dot"></span>
+          <span class="highlight-text">{item}</span>
+        </li>
+      ))}
+    </ul>
+
+  </div>
+
+  <!-- RIGHT (VIDEO intacto) -->
+  <div class="relative flex items-center justify-center md:justify-end">
+    <div class="relative">
+      <div class="absolute inset-0 -z-10 rounded-[2rem] bg-neutral-200/50 blur-3xl dark:bg-white/5"></div>
+
+      <div class="overflow-hidden rounded-[2rem] border border-neutral-200 bg-neutral-100 shadow-2xl dark:border-white/10 dark:bg-white/[0.03]">
+        <video
+          class="pixel-video block h-auto w-[324px] sm:w-[432px] md:w-[540px]"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          aria-label={t.videoLabel}
+        >
+          <source src="/momodora-cat.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<style>
+  .pixel-video {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    object-fit: contain;
+  }
+  .highlight-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 42px;
+    padding: 0.95rem 1rem;
+    border-radius: 1rem;
+    border: 1px solid rgb(229 229 229);
+    background: rgb(255 255 255 / 0.8);
+    color: rgb(64 64 64);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+    transition:
+      border-color 220ms ease,
+      background-color 220ms ease,
+      transform 220ms ease,
+      box-shadow 220ms ease,
+      color 220ms ease;
+  }
+
+  .highlight-item:hover {
+    transform: translateY(-2px);
+    border-color: rgb(34 197 94 / 0.35);
+    background: rgb(255 255 255 / 0.96);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.08);
+  }
+
+  .highlight-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background: rgb(23 23 23);
+    transition:
+      background-color 220ms ease,
+      transform 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  .highlight-item:hover .highlight-dot {
+    background: rgb(34 197 94);
+    transform: scale(1.15);
+    box-shadow: 0 0 0 6px rgb(34 197 94 / 0.12);
+  }
+
+  .highlight-text {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  :global(.dark) .highlight-item {
+    border-color: rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 0.05);
+    color: rgb(212 212 212);
+  }
+
+  :global(.dark) .highlight-item:hover {
+    border-color: rgb(34 197 94 / 0.4);
+    background: rgb(255 255 255 / 0.08);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.28);
+  }
+
+  :global(.dark) .highlight-dot {
+    background: rgb(245 245 245);
+  }
+</style>
