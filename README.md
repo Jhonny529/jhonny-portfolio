@@ -4,7 +4,7 @@ Portfolio built with Astro, focused on backend engineering, software architectur
 
 ## 🌐 Live Site
 
-**Portfolio:** https://jhonny-portfolio.vercel.app
+**Portfolio:** [https://jhonny-portfolio.vercel.app](https://jhonny-portfolio-seven.vercel.app/es/)
 
 ## 🚀 Tech Stack
 
