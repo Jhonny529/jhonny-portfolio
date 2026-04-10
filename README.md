@@ -2,6 +2,10 @@
 
 Portfolio built with Astro, focused on backend engineering, software architecture, and production-ready systems.
 
+## 🌐 Live Site
+
+**Portfolio:** https://jhonny-portfolio.vercel.app
+
 ## 🚀 Tech Stack
 
 - Astro
