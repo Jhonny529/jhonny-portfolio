@@ -30,12 +30,16 @@ const nav = {
 
 const t = nav[lang];
 
+// Etiquetas del otro idioma: se renderizan ocultas para reservar su ancho, de modo
+// que los enlaces no cambien de tamaño ni se desplacen al alternar EN <-> ES.
+const other = nav[lang === 'en' ? 'es' : 'en'];
+
 const items = [
-  { href: '#home', label: t.home, icon: 'home' },
-  { href: '#about', label: t.about, icon: 'user' },
-  // { href: '#projects', label: t.projects, icon: 'projects' },
-  { href: '#experience', label: t.experience, icon: 'briefcase' },
-  { href: '#contact', label: t.contact, icon: 'mail' },
+  { href: '#home', key: 'home', icon: 'home' },
+  { href: '#about', key: 'about', icon: 'user' },
+  // { href: '#projects', key: 'projects', icon: 'projects' },
+  { href: '#experience', key: 'experience', icon: 'briefcase' },
+  { href: '#contact', key: 'contact', icon: 'mail' },
 ] as const;
 ---
 
@@ -51,7 +55,7 @@ const items = [
       aria-controls="mobile-menu"
     >
       <svg
-        id="icon-hamburger"
+        class="menu-icon menu-icon--open"
         xmlns="http://www.w3.org/2000/svg"
         width="22"
         height="22"
@@ -69,7 +73,7 @@ const items = [
       </svg>
 
       <svg
-        id="icon-close"
+        class="menu-icon menu-icon--close"
         xmlns="http://www.w3.org/2000/svg"
         width="22"
         height="22"
@@ -80,7 +84,6 @@ const items = [
         stroke-linecap="round"
         stroke-linejoin="round"
         aria-hidden="true"
-        style="display: none;"
       >
         <line x1="18" y1="6" x2="6" y2="18" />
         <line x1="6" y1="6" x2="18" y2="18" />
@@ -91,11 +94,14 @@ const items = [
     <div aria-hidden="true" class="hidden h-10 w-[120px] md:block"></div>
 
     <!-- Nav desktop -->
-    <nav class="hidden items-center justify-center gap-2 md:flex" aria-label="Primary navigation">
+    <nav class="hidden items-center justify-center gap-3 md:flex" aria-label="Primary navigation">
       {items.map((item) => (
         <a href={item.href} class="nav-link">
           <Icon name={item.icon} className="nav-icon" size={18} />
-          <span>{item.label}</span>
+          <span class="nav-label">
+            <span>{t[item.key]}</span>
+            <span class="nav-label__ghost" aria-hidden="true">{other[item.key]}</span>
+          </span>
         </a>
       ))}
     </nav>
@@ -117,7 +123,7 @@ const items = [
       {items.map((item) => (
         <a href={item.href} class="mobile-nav-link">
           <Icon name={item.icon} size={18} />
-          <span>{item.label}</span>
+          <span>{t[item.key]}</span>
         </a>
       ))}
     </nav>
@@ -126,36 +132,38 @@ const items = [
 
 <script is:inline>
   (() => {
-    const btn = document.getElementById('menu-toggle');
-    const menu = document.getElementById('mobile-menu');
-    const iconHamburger = document.getElementById('icon-hamburger');
-    const iconClose = document.getElementById('icon-close');
+    if (window.__menuInit) return;
+    window.__menuInit = true;
 
-    if (!btn || !menu || !iconHamburger || !iconClose) return;
-
-    let open = false;
-
+    // El header se vuelve a renderizar en cada navegación de idioma y Astro no
+    // reejecuta este script, así que los listeners van sobre document/window y el
+    // estado se lee del DOM en vez de guardarse en una variable local.
     const setOpen = (value) => {
-      open = value;
+      const btn = document.getElementById('menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+      if (!btn || !menu) return;
 
       btn.setAttribute('aria-expanded', String(value));
       menu.setAttribute('aria-hidden', String(!value));
       menu.classList.toggle('mobile-menu--open', value);
-
-      iconHamburger.style.display = value ? 'none' : '';
-      iconClose.style.display = value ? '' : 'none';
     };
 
-    btn.addEventListener('click', () => setOpen(!open));
+    const isOpen = () =>
+      document.getElementById('menu-toggle')?.getAttribute('aria-expanded') === 'true';
 
-    menu.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => setOpen(false));
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      if (target.closest('#menu-toggle')) {
+        setOpen(!isOpen());
+      } else if (target.closest('#mobile-menu a')) {
+        setOpen(false);
+      }
     });
 
     window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768 && open) {
-        setOpen(false);
-      }
+      if (window.innerWidth >= 768 && isOpen()) setOpen(false);
     });
   })();
 </script>
@@ -165,7 +173,7 @@ const items = [
     display: inline-flex;
     align-items: center;
     gap: 0.7rem;
-    padding: 0.78rem 1rem;
+    padding: 0.78rem 1.15rem;
     border-radius: 9999px;
     text-decoration: none;
     color: rgb(64 64 64);
@@ -175,6 +183,24 @@ const items = [
     transition:
       color 220ms ease,
       background-color 220ms ease;
+  }
+
+  /* Ambas etiquetas comparten la misma celda del grid, así que el ancho del
+     enlace lo fija la más larga de los dos idiomas y nunca cambia. */
+  .nav-label {
+    display: grid;
+    justify-items: center;
+  }
+
+  .nav-label > * {
+    grid-area: 1 / 1;
+    white-space: nowrap;
+  }
+
+  .nav-label__ghost {
+    height: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   :global(.dark) .nav-link {
@@ -215,6 +241,16 @@ const items = [
 
   :global(.dark) .menu-btn:hover {
     background: rgba(255, 255, 255, 0.07);
+  }
+
+  /* Icono según el estado del drawer, sin tocar estilos inline desde JS */
+  .menu-icon--close,
+  .menu-btn[aria-expanded='true'] .menu-icon--open {
+    display: none;
+  }
+
+  .menu-btn[aria-expanded='true'] .menu-icon--close {
+    display: block;
   }
 
   .mobile-menu {

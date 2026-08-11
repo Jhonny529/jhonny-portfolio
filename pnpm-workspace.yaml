@@ -1,0 +1,10 @@
+# esbuild y sharp necesitan ejecutar sus scripts de instalación (binarios nativos).
+# allowBuilds lo lee pnpm >= 11; onlyBuiltDependencies es el nombre anterior y lo
+# siguen leyendo pnpm 9/10, que es lo que usa Vercel con este lockfile (v9).
+allowBuilds:
+  esbuild: true
+  sharp: true
+
+onlyBuiltDependencies:
+  - esbuild
+  - sharp

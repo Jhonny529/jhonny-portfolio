@@ -6,22 +6,22 @@ interface Props {
 const { lang = 'en' } = Astro.props;
 
 const labelMap = {
-  en: { dark: 'Dark', light: 'Light' },
-  es: { dark: 'Oscuro', light: 'Claro' },
+  en: { dark: 'Dark', light: 'Light', aria: 'Toggle theme' },
+  es: { dark: 'Oscuro', light: 'Claro', aria: 'Cambiar tema' },
 };
 
 const t = labelMap[lang];
 ---
 
-<button
-  id="theme-toggle"
-  type="button"
-  class="theme-toggle"
-  aria-label="Toggle theme"
->
+<!--
+  El estado visual se resuelve solo con CSS a partir de la clase .dark del <html>.
+  El click lo maneja el listener delegado de Layout.astro, porque este componente
+  se vuelve a renderizar en cada navegación de idioma.
+-->
+<button id="theme-toggle" type="button" class="theme-toggle" aria-label={t.aria}>
   <!-- Moon: visible en dark mode -->
   <svg
-    id="theme-icon-moon"
+    class="theme-icon theme-icon--moon"
     xmlns="http://www.w3.org/2000/svg"
     width="18"
     height="18"
@@ -38,7 +38,7 @@ const t = labelMap[lang];
 
   <!-- Sun: visible en light mode -->
   <svg
-    id="theme-icon-sun"
+    class="theme-icon theme-icon--sun"
     xmlns="http://www.w3.org/2000/svg"
     width="18"
     height="18"
@@ -49,52 +49,14 @@ const t = labelMap[lang];
     stroke-linecap="round"
     stroke-linejoin="round"
     aria-hidden="true"
-    style="display:none"
   >
     <circle cx="12" cy="12" r="4"/>
     <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
   </svg>
 
-  <span id="theme-toggle-label">{t.dark}</span>
+  <span class="theme-label theme-label--dark">{t.dark}</span>
+  <span class="theme-label theme-label--light">{t.light}</span>
 </button>
-
-<script is:inline>
-  (() => {
-    const root = document.documentElement;
-    const button = document.getElementById('theme-toggle');
-    const iconMoon = document.getElementById('theme-icon-moon');
-    const iconSun = document.getElementById('theme-icon-sun');
-    const label = document.getElementById('theme-toggle-label');
-
-    const labels = {
-      en: { dark: 'Dark', light: 'Light' },
-      es: { dark: 'Oscuro', light: 'Claro' },
-    };
-    const currentLang = root.lang === 'es' ? 'es' : 'en';
-
-    const applyThemeState = () => {
-      const isDark = root.classList.contains('dark');
-      if (iconMoon) iconMoon.style.display = isDark ? '' : 'none';
-      if (iconSun)  iconSun.style.display  = isDark ? 'none' : '';
-      if (label) label.textContent = isDark ? labels[currentLang].dark : labels[currentLang].light;
-    };
-
-    applyThemeState();
-
-    button?.addEventListener('click', () => {
-      const isDark = root.classList.contains('dark');
-      if (isDark) {
-        root.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      } else {
-        root.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      }
-      applyThemeState();
-      window.dispatchEvent(new Event('theme-changed'));
-    });
-  })();
-</script>
 
 <style>
   .theme-toggle {
@@ -132,5 +94,26 @@ const t = labelMap[lang];
   :global(.dark) .theme-toggle:hover {
     background: rgb(255 255 255 / 0.07);
     color: white;
+  }
+
+  .theme-icon {
+    flex-shrink: 0;
+  }
+
+  /* Light mode: sol + etiqueta "Light" / "Claro" */
+  .theme-icon--moon,
+  .theme-label--dark {
+    display: none;
+  }
+
+  /* Dark mode: luna + etiqueta "Dark" / "Oscuro" */
+  :global(.dark) .theme-icon--moon,
+  :global(.dark) .theme-label--dark {
+    display: inline-block;
+  }
+
+  :global(.dark) .theme-icon--sun,
+  :global(.dark) .theme-label--light {
+    display: none;
   }
 </style>

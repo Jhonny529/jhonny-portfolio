@@ -15,7 +15,7 @@ const {
 ---
 
 <!doctype html>
-<html lang={lang} class="dark">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -27,14 +27,37 @@ const {
 
     <script is:inline>
       (() => {
-        const savedTheme = localStorage.getItem('theme');
+        if (window.__themeInit) return;
+        window.__themeInit = true;
 
-        if (savedTheme === 'light') {
-          document.documentElement.classList.remove('dark');
-        } else {
-          document.documentElement.classList.add('dark');
-          if (!savedTheme) localStorage.setItem('theme', 'dark');
-        }
+        const root = document.documentElement;
+
+        const applyTheme = () => {
+          const isDark = localStorage.getItem('theme') !== 'light';
+          root.classList.toggle('dark', isDark);
+          root.style.colorScheme = isDark ? 'dark' : 'light';
+        };
+
+        applyTheme();
+
+        // Con <ClientRouter />, Astro borra los atributos del <html> actual y los
+        // reemplaza por los del documento entrante en cada navegación. Sin esto,
+        // cambiar de idioma descartaría el tema elegido.
+        document.addEventListener('astro:after-swap', applyTheme);
+
+        // El botón se reemplaza en cada navegación, pero Astro no vuelve a ejecutar
+        // un script idéntico al que ya corrió, así que un listener puesto sobre el
+        // botón se perdería. Delegamos en document, que sí sobrevive al swap.
+        document.addEventListener('click', (event) => {
+          const target = event.target;
+          if (!(target instanceof Element) || !target.closest('#theme-toggle')) return;
+
+          localStorage.setItem(
+            'theme',
+            root.classList.contains('dark') ? 'light' : 'dark',
+          );
+          applyTheme();
+        });
       })();
     </script>
   </head>
