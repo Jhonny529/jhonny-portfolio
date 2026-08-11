@@ -1,4 +1,5 @@
 @import "tailwindcss";
 
-/* Dark mode basado en clase .dark en <html> (no media query) */
-@custom-variant dark (&:is(.dark *));
+/* Dark mode basado en clase .dark en <html> (no media query).
+   Incluye el propio elemento con .dark, no solo sus descendientes. */
+@custom-variant dark (&:where(.dark, .dark *));

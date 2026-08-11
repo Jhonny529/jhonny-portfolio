@@ -104,7 +104,14 @@ const t = content[lang];
       <div class="absolute inset-0 -z-10 rounded-[2rem] bg-neutral-200/50 blur-3xl dark:bg-white/5"></div>
 
       <div class="overflow-hidden rounded-[2rem] border border-neutral-200 bg-neutral-100 shadow-2xl dark:border-white/10 dark:bg-white/[0.03]">
+        <!--
+          transition:persist conserva el mismo nodo <video> al cambiar de idioma.
+          Sin esto el navegador recibe un <video> nuevo parseado fuera del documento
+          y a veces no relanza la carga del recurso, dejando el recuadro en negro.
+        -->
         <video
+          id="hero-video"
+          transition:persist="hero-video"
           class="pixel-video block h-auto w-[324px] sm:w-[432px] md:w-[540px]"
           autoplay
           muted
@@ -120,6 +127,38 @@ const t = content[lang];
   </div>
 
 </section>
+
+<script is:inline>
+  (() => {
+    if (window.__heroVideoInit) return;
+    window.__heroVideoInit = true;
+
+    const labels = {
+      en: 'Animated hero preview',
+      es: 'Vista previa animada',
+    };
+
+    // Red de seguridad: si el vídeo se quedó sin recurso cargado (swap) o pausado
+    // (persistió entre navegaciones, pestaña en segundo plano), lo recuperamos.
+    const ensureVideo = () => {
+      const video = document.getElementById('hero-video');
+      if (!video) return;
+
+      const lang = document.documentElement.lang === 'es' ? 'es' : 'en';
+      video.setAttribute('aria-label', labels[lang]);
+
+      try {
+        if (video.readyState === 0) video.load();
+        video.play()?.catch(() => {});
+      } catch {
+        // Reproducción bloqueada por el navegador: no es motivo para romper nada.
+      }
+    };
+
+    ensureVideo();
+    document.addEventListener('astro:page-load', ensureVideo);
+  })();
+</script>
 
 <style>
   .pixel-video {
