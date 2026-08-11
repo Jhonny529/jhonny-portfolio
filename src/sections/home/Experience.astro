@@ -15,13 +15,18 @@ const content = {
     featuredStack: [
       'Node.js',
       'TypeScript',
+      'Express 5',
       'PostgreSQL',
       'Prisma',
       'Redis',
+      'BullMQ',
+      'Socket.IO',
       'Docker',
       'Nginx',
+      'Python',
       'FastAPI',
       'Qdrant',
+      'AWS S3',
       'Groq',
     ],
     items: [
@@ -33,11 +38,12 @@ const content = {
         summary:
           'Leading the technical direction of a legal-tech platform while working hands-on across backend engineering, system design, infrastructure, deployment, and AI-assisted services.',
         bullets: [
-          'Defined backend architecture, engineering standards, and technical direction across the platform.',
-          'Designed and built scalable backend services and APIs using Node.js, TypeScript, PostgreSQL, and Prisma.',
-          'Coordinated service integration, real-time communication flows, and multi-service platform structure.',
-          'Implemented AI-assisted workflows with FastAPI, Qdrant vector search, and Groq-based integrations.',
-          'Managed infrastructure decisions including VPS environments, reverse proxy configuration, Dockerized services, and deployment strategy.',
+          'Defined the backend architecture and engineering standards: Vertical Slice Architecture across 16 modules and 400+ HTTP slices, with CI gates that enforce them.',
+          'Designed and built the product API with Node.js, TypeScript, Express 5, PostgreSQL, and Prisma, covered by roughly 6,800 unit tests.',
+          'Built the legal data plane end to end: a scraper covering 33 public sources, a FastAPI ingestion and RAG service, and a Qdrant vector index shared across services.',
+          'Coordinated multi-service integration, including migrating the assistant chat from Python to Node without breaking the SSE contract already in use.',
+          'Implemented credit-based billing across two payment providers, with per-model token accounting for AI usage.',
+          'Managed infrastructure decisions including VPS environments, reverse proxy configuration, Dockerized services, deployment strategy, and production incident diagnosis.',
         ],
       },
       {
@@ -79,13 +85,18 @@ const content = {
     featuredStack: [
       'Node.js',
       'TypeScript',
+      'Express 5',
       'PostgreSQL',
       'Prisma',
       'Redis',
+      'BullMQ',
+      'Socket.IO',
       'Docker',
       'Nginx',
+      'Python',
       'FastAPI',
       'Qdrant',
+      'AWS S3',
       'Groq',
     ],
     items: [
@@ -97,11 +108,12 @@ const content = {
         summary:
           'Liderando la dirección técnica de una plataforma legal-tech mientras ejecuto trabajo directo en backend, diseño de sistemas, infraestructura, despliegue y servicios asistidos por IA.',
         bullets: [
-          'Definir la arquitectura backend, estándares de ingeniería y dirección técnica de la plataforma.',
-          'Diseñar y construir servicios backend y APIs escalables con Node.js, TypeScript, PostgreSQL y Prisma.',
-          'Coordinar integración de servicios, flujos de comunicación en tiempo real y estructura de plataforma multi-servicio.',
-          'Implementar flujos asistidos por IA con FastAPI, búsqueda vectorial en Qdrant e integraciones con Groq.',
-          'Gestionar decisiones de infraestructura, entornos VPS, configuración de reverse proxy, servicios en Docker y estrategia de despliegue.',
+          'Definir la arquitectura backend y los estándares de ingeniería: Vertical Slice Architecture en 16 módulos y más de 400 slices HTTP, con gates de CI que los hacen cumplir.',
+          'Diseñar y construir la API de producto con Node.js, TypeScript, Express 5, PostgreSQL y Prisma, cubierta por unos 6.800 tests unitarios.',
+          'Construir el plano de datos legales de punta a punta: un scraper que cubre 33 fuentes públicas, un servicio FastAPI de ingesta y RAG, y un índice vectorial en Qdrant compartido entre servicios.',
+          'Coordinar la integración multi-servicio, incluida la migración del chat del asistente de Python a Node sin romper el contrato SSE que ya estaba en uso.',
+          'Implementar el cobro por créditos con dos pasarelas de pago y contabilidad de tokens por modelo para el consumo de IA.',
+          'Gestionar decisiones de infraestructura, entornos VPS, configuración de reverse proxy, servicios en Docker, estrategia de despliegue y diagnóstico de incidentes en producción.',
         ],
       },
       {
