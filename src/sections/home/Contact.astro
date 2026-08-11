@@ -10,8 +10,6 @@ const linkedin = 'https://www.linkedin.com/in/jhonny-sanes/';
 const github = 'https://github.com/Jhonny529';
 const cv = 'https://drive.google.com/file/d/1EEQP3IKMPtooE2wlAxrf79q37tXZ9mBj/view?usp=sharing';
 
-const hasValidEmail = email.includes('@');
-
 const content = {
   en: {
     eyebrow: 'Contact',
@@ -21,14 +19,13 @@ const content = {
     primaryCta: 'View CV',
     secondaryCta: 'GitHub profile',
     infoTitle: 'Professional contact',
-    availabilityTitle: 'Current focus',
     availabilityText:
       'Open to backend engineering work, technical collaborations, architecture-focused roles, and product-oriented development.',
-   cards: [
+    cards: [
       {
         label: 'Email',
-        value: hasValidEmail ? email : 'Pending confirmation',
-        href: hasValidEmail ? `mailto:${email}` : null,
+        value: email,
+        href: `mailto:${email}`,
       },
       {
         label: 'LinkedIn',
@@ -46,10 +43,6 @@ const content = {
         href: null,
       },
     ],
-    note:
-      !hasValidEmail
-        ? 'The email provided is not valid as written. It appears to be missing the @ symbol, so it should be corrected before publishing this section.'
-        : 'Make sure all links remain public and updated before publishing.',
     workStyleTitle: 'Work setup',
     workStyleText:
       'I work best in remote or semi-remote environments that allow focused execution, clear technical communication, and well-structured collaboration. This setup helps me stay productive while contributing effectively across backend development, architecture, and deployment workflows.',
@@ -68,14 +61,13 @@ const content = {
     primaryCta: 'Ver CV',
     secondaryCta: 'Perfil de GitHub',
     infoTitle: 'Contacto profesional',
-    availabilityTitle: 'Enfoque actual',
     availabilityText:
       'Disponible para roles de backend, colaboraciones técnicas, trabajo orientado a arquitectura y desarrollo de producto.',
     cards: [
       {
         label: 'Email',
-        value: hasValidEmail ? email : 'Pending confirmation',
-        href: hasValidEmail ? `mailto:${email}` : null,
+        value: email,
+        href: `mailto:${email}`,
       },
       {
         label: 'LinkedIn',
@@ -93,10 +85,6 @@ const content = {
         href: null,
       },
     ],
-    note:
-      !hasValidEmail
-        ? 'El correo proporcionado no es válido tal como está escrito. Parece que falta el símbolo @, así que debes corregirlo antes de publicar esta sección.'
-        : 'Asegúrate de que todos los enlaces sigan siendo públicos y estén actualizados antes de publicar.',
     workStyleTitle: 'Forma de trabajo',
     workStyleText:
       'Trabajo mejor en entornos remotos o semi remotos que permitan concentración, comunicación técnica clara y colaboración bien estructurada. Ese formato me ayuda a mantener una ejecución sólida y aportar mejor en backend, arquitectura y despliegue.',

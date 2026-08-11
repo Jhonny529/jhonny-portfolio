@@ -8,10 +8,38 @@ interface Props {
   lang?: 'es' | 'en';
 }
 
-const {
-  title = 'Jhonny Sanes | Backend Engineer',
-  lang = 'en',
-} = Astro.props;
+const meta = {
+  en: {
+    title: 'Jhonny Sanes | Backend Engineer',
+    description:
+      'Backend engineer focused on architecture, scalable APIs, and production-ready infrastructure. Node.js, TypeScript, PostgreSQL, Prisma, Docker.',
+    locale: 'en_US',
+  },
+  es: {
+    title: 'Jhonny Sanes | Ingeniero Backend',
+    description:
+      'Ingeniero backend enfocado en arquitectura, APIs escalables e infraestructura lista para producción. Node.js, TypeScript, PostgreSQL, Prisma, Docker.',
+    locale: 'es_PE',
+  },
+};
+
+const { lang = 'en' } = Astro.props;
+const { title = meta[lang].title, description = meta[lang].description } = Astro.props;
+
+// Astro.site solo existe si se define `site` en astro.config.mjs. Sin él no hay forma
+// de construir las URLs absolutas que exigen los crawlers (canonical, og:url,
+// og:image), así que esas etiquetas se omiten en vez de emitirse rotas.
+const site = Astro.site;
+const canonical = site ? new URL(Astro.url.pathname, site).href : null;
+const ogImage = site ? new URL('/Jhonny.png', site).href : null;
+
+const alternates = site
+  ? [
+      { hreflang: 'en', href: new URL('/', site).href },
+      { hreflang: 'es', href: new URL('/es/', site).href },
+      { hreflang: 'x-default', href: new URL('/', site).href },
+    ]
+  : [];
 ---
 
 <!doctype html>
@@ -22,6 +50,25 @@ const {
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" href="/favicon.ico" />
     <title>{title}</title>
+    <meta name="description" content={description} />
+
+    {canonical && <link rel="canonical" href={canonical} />}
+    {alternates.map((alternate) => (
+      <link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
+    ))}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Jhonny Sanes" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content={meta[lang].locale} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
 
     <ClientRouter />
 
