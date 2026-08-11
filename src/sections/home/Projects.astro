@@ -1,0 +1,308 @@
+---
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const content = {
+  en: {
+    eyebrow: 'Projects',
+    title: 'A legal-tech platform: backend, data, and infrastructure',
+    description:
+      'Arxatec is a Peruvian legal platform built as several independent services that talk to each other through explicit contracts. My scope is the backend, the legal data pipeline, and the infrastructure underneath — the web clients are outside it.',
+    featured: {
+      name: 'Arxatec',
+      kind: 'Legal-tech platform · Peru',
+      scope: 'Scope: backend, data, and infrastructure',
+      note: 'Private repositories',
+      summary:
+        'A corpus of public legal documents plus an AI assistant for lawyers. A scraper feeds the corpus, a Python microservice indexes it and answers RAG queries over it, and a Node API carries the product itself: cases, calendar, documents, chat, and billing.',
+      stack: [
+        'Node.js',
+        'TypeScript',
+        'Express 5',
+        'Prisma 7',
+        'PostgreSQL',
+        'Redis',
+        'BullMQ',
+        'Socket.IO',
+        'Python',
+        'FastAPI',
+        'Qdrant',
+        'LangChain',
+        'AWS S3',
+        'Docker',
+        'Nginx',
+      ],
+      bullets: [
+        'Vertical Slice Architecture: every endpoint is a self-contained unit owning its domain, data, and presentation layers — 16 modules and over 400 HTTP slices in the main API.',
+        'Cross-repo contracts that cannot be changed in a single repo: the canonical source catalog has its SHA-256 fingerprint pinned in the test suites of three repositories at once.',
+        'Migrated the assistant chat from Python to Node while keeping the SSE contract the client already consumed frozen.',
+        'Credit-based billing across two payment providers (MercadoPago and Polar), per-model token accounting, and metering of AI usage.',
+        'VPS deployment with Docker, Nginx, and pm2 — including diagnosing failures that only surface in production, such as the ESM/CJS crash-loop of the Prisma 7 client on Node 22.',
+      ],
+    },
+    componentsTitle: 'The services',
+    components: [
+      {
+        name: 'arxatec-lawyer-service',
+        kind: 'Product API · Node.js',
+        summary:
+          'Express 5 API in strict TypeScript over PostgreSQL with Prisma. Cases, contacts, calendar, documents, kanban, chat, finances, notifications, and billing.',
+        bullets: [
+          '16 modules, 400+ HTTP slices, and roughly 6,800 unit tests',
+          'Background work with BullMQ and Redis; real time over Socket.IO and SSE',
+          'PDF/DOCX generation, OCR, and S3 storage',
+          'Seven CI gates: lint, types, test types, dependency boundaries, tests, and build',
+        ],
+        tech: ['Express 5', 'Prisma 7', 'PostgreSQL', 'Redis', 'BullMQ', 'Socket.IO', 'Zod', 'Jest'],
+      },
+      {
+        name: 'arxatec-lawyer-assistant',
+        kind: 'RAG microservice · Python',
+        summary:
+          'FastAPI service that ingests documents from S3, splits them, generates embeddings, and indexes them in Qdrant to answer with verifiable legal context.',
+        bullets: [
+          'Ingestion pipeline: extraction → chunking → embeddings → Qdrant + PostgreSQL',
+          'Every answer traceable back to the document and its official source',
+          'Ingestion bottleneck measured rather than assumed: the cost was not Qdrant (0.4% of the time) but one embedding request per chunk, issued serially',
+          'Schema migrations with Alembic and SQLAlchemy',
+        ],
+        tech: ['FastAPI', 'LangChain', 'Qdrant', 'SQLAlchemy', 'Alembic', 'AWS S3', 'Poetry'],
+      },
+      {
+        name: 'arxatec-scrapping',
+        kind: 'Legal data pipeline · TypeScript',
+        summary:
+          'Scraper for Peru’s public legal sources: 33 sources covered by 21 modules, all producing the same ingestion contract.',
+        bullets: [
+          'Resumable by design: ledger plus checkpoint per source, so a retry never duplicates',
+          'Per-source anti-blocking (throttling, headers, residential IP), documented case by case',
+          'OCR fallback for scanned PDFs the backend rejects',
+          'A single smoke command returns a PASS/FAIL verdict before a module is called done',
+        ],
+        tech: ['TypeScript', 'Puppeteer', 'Cheerio', 'Tesseract OCR', 'Qdrant', 'PostgreSQL', 'AWS S3'],
+      },
+    ],
+    practiceTitle: 'How it stays maintainable',
+    practiceDescription:
+      'The platform is large enough that memory does not scale. What keeps it workable is a habit: never assume documentation is current — check it against the code before relying on it, and fix what drifted in the same change.',
+    practiceItems: [
+      'Dated session record: every audit or decision lands in a folder for that day, declaring the commit it was verified against.',
+      'The reasoning lives in each unit’s README rather than scattered comments — over 570 of them across modules, features, and slices.',
+      'Mechanical verification before anything is called done: lint, types, tests, and build. Nothing closes on visual inspection.',
+      'A branch and a pull request per unit of work; never a direct push to main.',
+    ],
+  },
+  es: {
+    eyebrow: 'Proyectos',
+    title: 'Una plataforma legal-tech: backend, datos e infraestructura',
+    description:
+      'Arxatec es una plataforma legal peruana construida como varios servicios independientes que se comunican mediante contratos explícitos. Mi alcance es el backend, el pipeline de datos legales y la infraestructura que los sostiene — los clientes web quedan fuera.',
+    featured: {
+      name: 'Arxatec',
+      kind: 'Plataforma legal-tech · Perú',
+      scope: 'Alcance: backend, datos e infraestructura',
+      note: 'Repositorios privados',
+      summary:
+        'Un corpus de documentos legales públicos y un asistente con IA para abogados. Un scraper alimenta el corpus, un microservicio Python lo indexa y responde consultas RAG sobre él, y una API Node sostiene el producto: casos, agenda, documentos, chat y cobros.',
+      stack: [
+        'Node.js',
+        'TypeScript',
+        'Express 5',
+        'Prisma 7',
+        'PostgreSQL',
+        'Redis',
+        'BullMQ',
+        'Socket.IO',
+        'Python',
+        'FastAPI',
+        'Qdrant',
+        'LangChain',
+        'AWS S3',
+        'Docker',
+        'Nginx',
+      ],
+      bullets: [
+        'Arquitectura Vertical Slice: cada endpoint es una unidad autónoma con sus capas de dominio, datos y presentación — 16 módulos y más de 400 slices HTTP en la API principal.',
+        'Contratos entre repositorios que no se pueden cambiar en uno solo: el catálogo de fuentes canónicas lleva su huella SHA-256 fijada en los tests de tres repositorios a la vez.',
+        'Migración del chat del asistente de Python a Node manteniendo congelado el contrato SSE que el cliente ya consumía.',
+        'Cobro por créditos con dos pasarelas (MercadoPago y Polar), contabilidad de tokens por modelo y medición del consumo de IA.',
+        'Despliegue en VPS con Docker, Nginx y pm2, incluyendo el diagnóstico de fallos que solo aparecen en producción — como el crash-loop ESM/CJS del cliente de Prisma 7 sobre Node 22.',
+      ],
+    },
+    componentsTitle: 'Los servicios',
+    components: [
+      {
+        name: 'arxatec-lawyer-service',
+        kind: 'API de producto · Node.js',
+        summary:
+          'API Express 5 en TypeScript estricto sobre PostgreSQL con Prisma. Casos, contactos, agenda, documentos, kanban, chat, finanzas, notificaciones y facturación.',
+        bullets: [
+          '16 módulos, más de 400 slices HTTP y alrededor de 6.800 tests unitarios',
+          'Trabajo asíncrono con BullMQ y Redis; tiempo real con Socket.IO y SSE',
+          'Generación de PDF/DOCX, OCR y almacenamiento en S3',
+          'Siete gates de CI: lint, tipos, tipos de tests, límites de dependencias, tests y build',
+        ],
+        tech: ['Express 5', 'Prisma 7', 'PostgreSQL', 'Redis', 'BullMQ', 'Socket.IO', 'Zod', 'Jest'],
+      },
+      {
+        name: 'arxatec-lawyer-assistant',
+        kind: 'Microservicio RAG · Python',
+        summary:
+          'Servicio FastAPI que ingiere documentos desde S3, los trocea, genera embeddings y los indexa en Qdrant para responder con contexto legal verificable.',
+        bullets: [
+          'Pipeline de ingesta: extracción → troceado → embeddings → Qdrant + PostgreSQL',
+          'Cada respuesta es trazable hasta el documento y su fuente oficial',
+          'Cuello de botella de la ingesta medido, no supuesto: el coste no estaba en Qdrant (0,4 % del tiempo) sino en un embedding por chunk lanzado en serie',
+          'Migraciones de esquema con Alembic y SQLAlchemy',
+        ],
+        tech: ['FastAPI', 'LangChain', 'Qdrant', 'SQLAlchemy', 'Alembic', 'AWS S3', 'Poetry'],
+      },
+      {
+        name: 'arxatec-scrapping',
+        kind: 'Pipeline de datos legales · TypeScript',
+        summary:
+          'Scraper de las fuentes legales públicas del Perú: 33 fuentes cubiertas por 21 módulos, todos armando el mismo contrato de ingesta.',
+        bullets: [
+          'Reanudable por diseño: ledger y checkpoint por fuente, así un reintento nunca duplica',
+          'Anti-bloqueo por fuente (throttling, cabeceras, IP residencial), documentado caso a caso',
+          'OCR de respaldo para los PDF escaneados que el backend rechaza',
+          'Un solo comando de smoke devuelve veredicto PASS/FAIL antes de dar un módulo por bueno',
+        ],
+        tech: ['TypeScript', 'Puppeteer', 'Cheerio', 'Tesseract OCR', 'Qdrant', 'PostgreSQL', 'AWS S3'],
+      },
+    ],
+    practiceTitle: 'Cómo se mantiene mantenible',
+    practiceDescription:
+      'La plataforma es lo bastante grande como para que la memoria no escale. Lo que la sostiene es una costumbre: nunca dar por actualizada la documentación — comprobarla contra el código antes de apoyarse en ella y corregir lo desfasado en el mismo cambio.',
+    practiceItems: [
+      'Registro de sesión fechado: cada auditoría o decisión queda en la carpeta de ese día, declarando el commit contra el que se verificó.',
+      'El porqué vive en el README de cada unidad de código, no en comentarios sueltos: más de 570 entre módulos, features y slices.',
+      'Verificación mecánica antes de dar algo por bueno: lint, tipos, tests y build. Nada se cierra por inspección visual.',
+      'Una rama y un pull request por unidad de trabajo; nunca un push directo a main.',
+    ],
+  },
+};
+
+const t = content[lang];
+---
+
+<section class="space-y-12">
+  <div class="max-w-3xl space-y-4">
+    <p class="text-sm font-medium uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-400">
+      {t.eyebrow}
+    </p>
+
+    <h2 class="text-3xl font-semibold tracking-tight text-neutral-950 dark:text-white md:text-4xl">
+      {t.title}
+    </h2>
+
+    <p class="text-base leading-8 text-neutral-600 dark:text-neutral-300 md:text-lg">
+      {t.description}
+    </p>
+  </div>
+
+  <article class="rounded-3xl border border-neutral-200 bg-white/80 p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-lg dark:border-white/10 dark:bg-white/5 dark:hover:border-white/15 dark:hover:bg-white/[0.07]">
+    <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+      <div>
+        <h3 class="text-2xl font-semibold text-neutral-950 dark:text-white">
+          {t.featured.name}
+        </h3>
+
+        <p class="mt-1 text-sm font-medium text-neutral-700 dark:text-neutral-200">
+          {t.featured.kind}
+        </p>
+      </div>
+
+      <div class="text-sm text-neutral-500 dark:text-neutral-400 md:text-right">
+        <p>{t.featured.scope}</p>
+        <p>{t.featured.note}</p>
+      </div>
+    </div>
+
+    <p class="mt-5 max-w-3xl text-sm leading-7 text-neutral-600 dark:text-neutral-300 md:text-base">
+      {t.featured.summary}
+    </p>
+
+    <div class="mt-5 flex flex-wrap gap-2">
+      {t.featured.stack.map((tech) => (
+        <span class="rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs text-neutral-700 transition hover:border-green-500/40 hover:text-neutral-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-neutral-300 dark:hover:border-green-500/40 dark:hover:text-white">
+          {tech}
+        </span>
+      ))}
+    </div>
+
+    <ul class="mt-6 space-y-3 text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+      {t.featured.bullets.map((bullet) => (
+        <li class="group flex gap-3">
+          <span class="mt-2 h-1.5 w-1.5 rounded-full bg-neutral-400 transition group-hover:bg-green-500 dark:bg-neutral-500"></span>
+          <span>{bullet}</span>
+        </li>
+      ))}
+    </ul>
+  </article>
+
+  <div class="space-y-5">
+    <h3 class="text-lg font-semibold text-neutral-950 dark:text-white">
+      {t.componentsTitle}
+    </h3>
+
+    <div class="grid gap-5 md:grid-cols-3">
+      {t.components.map((project) => (
+        <article class="group flex flex-col rounded-3xl border border-neutral-200 bg-white/80 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-lg dark:border-white/10 dark:bg-white/5 dark:hover:border-white/15 dark:hover:bg-white/[0.07]">
+          <h4 class="break-words font-mono text-base font-semibold text-neutral-950 dark:text-white">
+            {project.name}
+          </h4>
+
+          <p class="mt-1 text-sm font-medium text-neutral-700 dark:text-neutral-200">
+            {project.kind}
+          </p>
+
+          <p class="mt-4 text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+            {project.summary}
+          </p>
+
+          <ul class="mt-5 space-y-3 text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+            {project.bullets.map((bullet) => (
+              <li class="flex gap-3">
+                <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-400 transition group-hover:bg-green-500 dark:bg-neutral-500"></span>
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div class="mt-6 flex flex-wrap gap-2 pt-1">
+            {project.tech.map((tech) => (
+              <span class="rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-xs text-neutral-700 transition hover:border-green-500/40 hover:text-neutral-950 dark:border-white/10 dark:bg-white/[0.04] dark:text-neutral-300 dark:hover:border-green-500/40 dark:hover:text-white">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <article class="group rounded-3xl border border-neutral-200 bg-white/80 p-6 shadow-sm dark:border-white/10 dark:bg-white/5">
+    <div class="max-w-3xl space-y-3">
+      <h3 class="text-lg font-semibold text-neutral-950 dark:text-white">
+        {t.practiceTitle}
+      </h3>
+
+      <p class="text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+        {t.practiceDescription}
+      </p>
+    </div>
+
+    <ul class="mt-5 grid gap-3 md:grid-cols-2">
+      {t.practiceItems.map((item) => (
+        <li class="flex items-start gap-3 text-sm leading-7 text-neutral-600 dark:text-neutral-300">
+          <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-400 transition group-hover:bg-green-500 dark:bg-neutral-500"></span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  </article>
+</section>
